@@ -9,7 +9,7 @@ import spinal.lib.generator.GeneratorComponent
 import spinal.lib.sim.SparseMemory
 import vexriscv.demo.smp.VexRiscvSmpClusterGen.vexRiscvConfig
 import vexriscv.ip.fpu.{FpuCore, FpuParameter}
-import vexriscv.plugin.{AesPlugin, DBusCachedPlugin, FpuPlugin}
+import vexriscv.plugin.{AesPlugin, CryptoZksPlugin, DBusCachedPlugin, FpuPlugin}
 
 
 case class VexRiscvLitexSmpClusterParameter( cluster : VexRiscvSmpClusterParameter,
@@ -135,6 +135,7 @@ object VexRiscvLitexSmpClusterCmdGen extends App {
     opt[String]("netlist-directory") action { (v, c) => netlistDirectory = v }
     opt[String]("netlist-name") action { (v, c) => netlistName = v }
     opt[String]("aes-instruction") action { (v, c) => aesInstruction = v.toBoolean }
+    opt[String]("zks-instruction") action { (v, c) => zksInstruction = v.toBoolean }
     opt[String]("out-of-order-decoder") action { (v, c) => outOfOrderDecoder = v.toBoolean  }
     opt[String]("wishbone-memory" ) action { (v, c) => wishboneMemory = v.toBoolean  }
     opt[String]("wishbone-force-32b" ) action { (v, c) => wishboneForce32b = v.toBoolean  }
@@ -172,7 +173,7 @@ object VexRiscvLitexSmpClusterCmdGen extends App {
 	  dTlbSize = dTlbSize
         )
         if(aesInstruction) c.add(new AesPlugin)
-        c.add(new CryptoZksPlugin)
+	if(zksInstruction) c.add(new CryptoZksPlugin)
         c
       }},
       withExclusiveAndInvalidation = coherency,
