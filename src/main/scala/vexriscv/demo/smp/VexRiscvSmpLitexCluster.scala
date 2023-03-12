@@ -172,6 +172,7 @@ object VexRiscvLitexSmpClusterCmdGen extends App {
 	  dTlbSize = dTlbSize
         )
         if(aesInstruction) c.add(new AesPlugin)
+        c.add(new CryptoZksPlugin)
         c
       }},
       withExclusiveAndInvalidation = coherency,
